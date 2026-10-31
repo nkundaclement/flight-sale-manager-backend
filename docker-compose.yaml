@@ -1,0 +1,15 @@
+services:
+  main-db:
+    image: postgres:16
+    container_name: flight-sale-manager-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_URL}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - flight_sale_manager_db:/var/lib/postgresql/data
+
+volumes:
+  flight_sale_manager_db:
