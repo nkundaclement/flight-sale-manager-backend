@@ -1,0 +1,3449 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: flight-sale-manager
+meta:
+  id: wrk_60ff86e08f08458c8b819bb50fd71cc8
+  created: 1793487149853
+  modified: 1793535620417
+  description: ""
+collection:
+  - name: 06 - Part E - Issued tickets
+    meta:
+      id: fld_27eab4d474fb4ccf8e4195a921a3bdfc
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 145000
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/issued-tickets/delete/{% response 'body',
+          'req_950ab022574b44c0b4b50cd523c5709d', 'b64::JFswXS5pZA==::46b',
+          'always', 0 %}"
+        name: E3 OK - delete first ticket of PC123456 (200)
+        meta:
+          id: req_2c6b407eeadd4a388c57024893a8c7af
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 200 'Issued ticket deleted successfully'
+          sortKey: 155000
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/delete/{% response 'body',
+          'req_eab833f5680e4adc953051485cc8b487',
+          'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0 %}"
+        name: E3 ERR - delete order that has tickets (409)
+        meta:
+          id: req_524cad0f660c49cda30f5ffa5197542f
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 409 'That sales order has issued tickets, delete them first'
+          sortKey: 153000
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/save?salesOrderId={% response 'body',
+          'req_eab833f5680e4adc953051485cc8b487',
+          'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0 %}"
+        name: E1 OK - 2nd ticket same order (201)
+        meta:
+          id: req_818c06e9272f45ea895e230eb4e83540
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: One order can have many tickets
+          sortKey: 147000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "route": "Kigali - Doha",
+              "remarks": "Business",
+              "passengers": 1
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/save?salesOrderId={{ _.unknown_id }}"
+        name: E1 ERR - unknown order (404)
+        meta:
+          id: req_b7523fedc372465cbdfe7b1159b65081
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 404 'The sales order with that id does not exist'
+          sortKey: 150000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "route": "Kigali - Nairobi",
+              "remarks": "Economy, window seat requested",
+              "passengers": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/client/{{ _.passport }}"
+        name: E2 - ticket history of client PC123456
+        meta:
+          id: req_dacca643f2a145a3a99fff0014b6a782
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Newest issuedDate first
+          sortKey: 151000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/client/{{ _.passport_none }}"
+        name: E2 - client without tickets -> []
+        meta:
+          id: req_e668c18819434df3a212d3b9d84781ac
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 200 []
+          sortKey: 152000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/delete/{{ _.unknown_id }}"
+        name: E3 ERR - unknown ticket (404)
+        meta:
+          id: req_f090e9da24e04abf9eac829c118afba2
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 404 'The issued ticket with that id does not exist'
+          sortKey: 154000
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/save?salesOrderId={% response 'body',
+          'req_eab833f5680e4adc953051485cc8b487',
+          'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDYpXS5pZA==::46b', 'always', 0 %}"
+        name: E1 OK - ticket on PAID order O6 (201)
+        meta:
+          id: req_f434b6fe7afd452fb6b83a2e1a5f040b
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 201
+          sortKey: 148000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "route": "Kigali - Nairobi",
+              "remarks": "Economy, window seat requested",
+              "passengers": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/save?salesOrderId={% response 'body',
+          'req_eab833f5680e4adc953051485cc8b487',
+          'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0 %}"
+        name: E1 OK - ticket on PAID order O1 (201)
+        meta:
+          id: req_f991c674e0ea4d7c8b0b343b2f70afde
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 201 'Issued ticket saved successfully'
+          sortKey: 146000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "route": "Kigali - Nairobi",
+              "remarks": "Economy, window seat requested",
+              "passengers": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/save?salesOrderId={% response 'body',
+          'req_eab833f5680e4adc953051485cc8b487',
+          'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDMpXS5pZA==::46b', 'always', 0 %}"
+        name: E1 ERR - order not PAID (400)
+        meta:
+          id: req_fcad0be5dcda4d56999bdc26cea5a94d
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 400 'Issued tickets are only for PAID sales orders'
+          sortKey: 149000
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "route": "Kigali - Nairobi",
+              "remarks": "Economy, window seat requested",
+              "passengers": 2
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: 01 - Seed Data (Step 0) - run in this order
+    meta:
+      id: fld_3101622c340c4e11b52c43b7ab41632b
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 8000
+      description: Run the sub-folders top to bottom (Insomnia Runner or one by one).
+        Creates 4 airlines, 4 desks, 3 agents, 5 clients, 10 orders.
+    children:
+      - name: 2. Sales desks (4)
+        meta:
+          id: fld_1156bc72c97a490f8d90877fb5be2cde
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 14000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/sales-desks/save"
+            name: Seed sales desk 2 - Airport Counter
+            meta:
+              id: req_134b24a8fe604c20bd9158f8a5018f48
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales desk saved successfully'
+              sortKey: 16000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 2,
+                  "name": "Airport Counter"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/save"
+            name: Seed sales desk 4 - VIP Lounge
+            meta:
+              id: req_5fe60359bf004ca898690491c3bf3014
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales desk saved successfully'
+              sortKey: 18000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 4,
+                  "name": "VIP Lounge"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/save"
+            name: Seed sales desk 1 - Main Hall
+            meta:
+              id: req_ab5289ee7e69461d84edb2a955a27b0e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales desk saved successfully'
+              sortKey: 15000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 1,
+                  "name": "Main Hall"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/save"
+            name: Seed sales desk 3 - Online Desk
+            meta:
+              id: req_de9c1752101b47db841346388152d584
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales desk saved successfully'
+              sortKey: 17000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 3,
+                  "name": "Online Desk"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: 1. Airlines (4)
+        meta:
+          id: fld_ad00828f69224256b6ac1fcef2510837
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 9000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/airlines/save"
+            name: Seed airline - Qatar Airways
+            meta:
+              id: req_0f1a380b915b4fae90468fa8af210e67
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Airline saved successfully'
+              sortKey: 13000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "Qatar Airways"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/save"
+            name: Seed airline - Kenya Airways
+            meta:
+              id: req_854bffe5cba544da8f4b5c46f2df6acc
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Airline saved successfully'
+              sortKey: 11000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "Kenya Airways"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/save"
+            name: Seed airline - Ethiopian Airlines
+            meta:
+              id: req_967f98a25bce4cefbdfe219c2d27b6d2
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Airline saved successfully'
+              sortKey: 12000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "Ethiopian Airlines"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/save"
+            name: Seed airline - RwandAir
+            meta:
+              id: req_ead880dc356c44789f7d262ce88c739d
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Airline saved successfully'
+              sortKey: 10000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "RwandAir"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: 4. Clients (5)
+        meta:
+          id: fld_af976f09b4e34e1683d06255aecfa0ed
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 23000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: Seed client - Jean Cyubahiro (PC123456)
+            meta:
+              id: req_03a9cd12ab8444e3b06ab07d604dd562
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 24000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Jean",
+                  "lastName": "Cyubahiro",
+                  "passportNumber": "PC123456",
+                  "email": "jean@mail.rw",
+                  "phone": "0788000001"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: Seed client - Grace Uwimana (PC456789)
+            meta:
+              id: req_807220eb5cd4499cb4597971ca000097
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 27000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Grace",
+                  "lastName": "Uwimana",
+                  "passportNumber": "PC456789",
+                  "email": "grace@mail.rw",
+                  "phone": "0788000004"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: Seed client - David Nkunda (PC567890)
+            meta:
+              id: req_d39e85dc7f3344fd8aec5ca7f6b31681
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 28000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "David",
+                  "lastName": "Nkunda",
+                  "passportNumber": "PC567890",
+                  "email": "david@mail.rw",
+                  "phone": "0788000005"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: Seed client - Marie Cyubahiro (PC234567)
+            meta:
+              id: req_f7d8a0db89584effbfdc96c39448f4ed
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 25000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Marie",
+                  "lastName": "Cyubahiro",
+                  "passportNumber": "PC234567",
+                  "email": "marie@mail.rw",
+                  "phone": "0788000002"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: Seed client - Eric Habimana (PC345678)
+            meta:
+              id: req_fc88d6f444a340249a099b86b79764c2
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 26000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Eric",
+                  "lastName": "Habimana",
+                  "passportNumber": "PC345678",
+                  "email": "eric@mail.rw",
+                  "phone": "0788000003"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: 5. Sales orders (10) + status moves
+        meta:
+          id: fld_c480dcffb5554d1f8e1fe94c726c2f32
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 29000
+          description: Orders are saved as QUOTED (D1) then moved with PATCH (D2). Order
+            of requests matters (same-day pair for Alice). Needs D2 implemented.
+        children:
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O7 - Carine / PC456789 / d_e (1007)
+            meta:
+              id: req_1c6961820fd4499bace9d214a37ff1a7
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 37000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_e }}",
+                  "totalAmount": 1007,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzQ1Njc4OScpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O8 - Bob / PC567890 / d_f (1008)
+            meta:
+              id: req_219a4845747c4bc097e1148bc4542e63
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 38000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_f }}",
+                  "totalAmount": 1008,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMTApXS5pZA==::46b', 'always', 0
+              %}/status?status=CANCELLED"
+            name: Seed order O10 -> CANCELLED
+            meta:
+              id: req_229de06fb9694a63a22ce1222d28fd0b
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 49000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDkpXS5pZA==::46b', 'always', 0
+              %}/status?status=PAID"
+            name: Seed order O9 -> PAID
+            meta:
+              id: req_2858834511da4ce3a188469fb750dfd4
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 48000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDkpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: Seed order O9 -> BOOKED
+            meta:
+              id: req_3e1a79143ef543fe83e9dff05b5eb5fb
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 47000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O5 - Alice / PC345678 / d_cancel (1005)
+            meta:
+              id: req_3fcae6f3bb504b36b096613f955c4ceb
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 35000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_cancel }}",
+                  "totalAmount": 1005,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzM0NTY3OCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDQpXS5pZA==::46b', 'always', 0
+              %}/status?status=CANCELLED"
+            name: Seed order O4 -> CANCELLED
+            meta:
+              id: req_73bb0d085fdc41449ec1dbc902cadff1
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 34000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O2 - Bob / PC123456 / d_b (1002)
+            meta:
+              id: req_78ba74dddd9b421994e8200e622074e1
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 31000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_b }}",
+                  "totalAmount": 1002,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzEyMzQ1NicpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O1 - Alice / PC123456 / d_a (1001)
+            meta:
+              id: req_7bdcc56cff354f3aa166dce58331d743
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 30000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_a }}",
+                  "totalAmount": 1001,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzEyMzQ1NicpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: Seed order O1 -> BOOKED
+            meta:
+              id: req_7cc70222d2cf4360b219994373864f14
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 41000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDYpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: Seed order O6 -> BOOKED
+            meta:
+              id: req_7f53f3bcb1a14cd38fe7407c5f4520f8
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 44000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O9 - Carine / PC345678 / d_g (1009)
+            meta:
+              id: req_853c066ea5bb4136b408398d70d59111
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 39000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_g }}",
+                  "totalAmount": 1009,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzM0NTY3OCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O3 - Carine / PC123456 / d_c (1003)
+            meta:
+              id: req_8f8aa30f8b6f46aba47bb8f88e1fec55
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 32000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_c }}",
+                  "totalAmount": 1003,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzEyMzQ1NicpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDIpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: Seed order O2 -> BOOKED
+            meta:
+              id: req_9d4e05d03552402c97db3beb90b2d014
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 43000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O10 - Alice / PC456789 / d_h (1010)
+            meta:
+              id: req_a2d70d9434ae4afebca3087084f5f732
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 40000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_h }}",
+                  "totalAmount": 1010,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzQ1Njc4OScpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDgpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: Seed order O8 -> BOOKED
+            meta:
+              id: req_a6741bbb82a543ce881afd4d5df60867
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 46000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O4 - Alice / PC234567 / d_cancel (1004)
+            meta:
+              id: req_c40656fcfa9f4761af5e6936316e64df
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 33000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_cancel }}",
+                  "totalAmount": 1004,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzIzNDU2NycpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0
+              %}/status?status=PAID"
+            name: Seed order O1 -> PAID
+            meta:
+              id: req_c6e4c4ab89a142038268ccd4893e66c7
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 42000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDYpXS5pZA==::46b', 'always', 0
+              %}/status?status=PAID"
+            name: Seed order O6 -> PAID
+            meta:
+              id: req_e6a987c56a2d4366a36be5af5a937397
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 45000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: Seed order O6 - Bob / PC234567 / d_d (1006)
+            meta:
+              id: req_ed0fb3d908a8411b9bba7960db9c25c8
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 36000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_d }}",
+                  "totalAmount": 1006,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzIzNDU2NycpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: 3. Agents (3)
+        meta:
+          id: fld_e99f367579934fbda7324c9838ae9392
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 19000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/agents/save"
+            name: Seed agent Alice (desk 1, RwandAir + Kenya Airways)
+            meta:
+              id: req_599d301c566e4caf8edd0d028bc14692
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201. Holds TWO airlines.
+              sortKey: 20000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "firstName": "Alice",
+                  "lastName": "Uwase",
+                  "email": "alice@flightsale.rw",
+                  "salesDesk": {"id": "{% response 'body', 'req_ea92c9ea2fac45f18b77dc2713491dc2', 'b64::JFs/KEAuZGVza051bWJlcj09MSldLmlk::46b', 'always', 0 %}"},
+                  "airlines": [{"id": "{% response 'body', 'req_74fa6c974c394e7f83680073f3c51c80', 'b64::JFs/KEAubmFtZT09J1J3YW5kQWlyJyldLmlk::46b', 'always', 0 %}"}, {"id": "{% response 'body', 'req_74fa6c974c394e7f83680073f3c51c80', 'b64::JFs/KEAubmFtZT09J0tlbnlhIEFpcndheXMnKV0uaWQ=::46b', 'always', 0 %}"}]
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/save"
+            name: Seed agent Carine (desk 3, Kenya Airways)
+            meta:
+              id: req_60ae236d4be244dea93b70336b9c5a6f
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201. Desk 4 stays without agent; Qatar Airways is held by
+                nobody.
+              sortKey: 22000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "firstName": "Carine",
+                  "lastName": "Ingabire",
+                  "email": "carine@flightsale.rw",
+                  "salesDesk": {"id": "{% response 'body', 'req_ea92c9ea2fac45f18b77dc2713491dc2', 'b64::JFs/KEAuZGVza051bWJlcj09MyldLmlk::46b', 'always', 0 %}"},
+                  "airlines": [{"id": "{% response 'body', 'req_74fa6c974c394e7f83680073f3c51c80', 'b64::JFs/KEAubmFtZT09J0tlbnlhIEFpcndheXMnKV0uaWQ=::46b', 'always', 0 %}"}]
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/save"
+            name: Seed agent Bob (desk 2, Ethiopian Airlines)
+            meta:
+              id: req_63babac7e83544d5b41de19a0d68adca
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201. Holds exactly ONE airline.
+              sortKey: 21000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "firstName": "Bob",
+                  "lastName": "Mugisha",
+                  "email": "bob@flightsale.rw",
+                  "salesDesk": {"id": "{% response 'body', 'req_ea92c9ea2fac45f18b77dc2713491dc2', 'b64::JFs/KEAuZGVza051bWJlcj09MildLmlk::46b', 'always', 0 %}"},
+                  "airlines": [{"id": "{% response 'body', 'req_74fa6c974c394e7f83680073f3c51c80', 'b64::JFs/KEAubmFtZT09J0V0aGlvcGlhbiBBaXJsaW5lcycpXS5pZA==::46b', 'always', 0 %}"}]
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: 02 - Part A - Domain model & CRUD
+    meta:
+      id: fld_566f19d03fc64c80b417868dbaf28af2
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 50000
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/airlines/all"
+        name: A1 - Airlines hide agents (@JsonIgnore)
+        meta:
+          id: req_5e6c75f7da82489887fa6e8caae278b4
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: "A1: airline objects must contain only id and name (no 'agents')."
+          sortKey: 52000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/all"
+        name: A2 CHECK - GET /api/sales-orders/all (typo check)
+        meta:
+          id: req_e1595025074544d08b16c996d3a51092
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Must return 200 + list.
+          sortKey: 165000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/agents/all"
+        name: A1 - Agents show airlines (airline must NOT show agents)
+        meta:
+          id: req_f1816cbe32714465baea38b6624563cb
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: "A1: JSON must not loop. Each agent has salesDesk + airlines[]."
+          sortKey: 51000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - name: A2 - Sales desks
+        meta:
+          id: fld_0a72eb4ceff443df9ffa74646bf1682f
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 62000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/sales-desks/{% response 'body',
+              'req_ea92c9ea2fac45f18b77dc2713491dc2',
+              'b64::JFs/KEAuZGVza051bWJlcj09OTkpXS5pZA==::46b', 'always', 0 %}"
+            name: A2 get sales desk by id
+            meta:
+              id: req_26bc56758cc246ff9a41c140295642f2
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + entity
+              sortKey: 65000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/{{ _.unknown_id }}"
+            name: A2 get sales desk - unknown id (404)
+            meta:
+              id: req_4d6c9ec577f34dd8813e861c345236b1
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The sales desk with that id does not exist'
+              sortKey: 68000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/delete/{% response 'body',
+              'req_ea92c9ea2fac45f18b77dc2713491dc2',
+              'b64::JFs/KEAuZGVza051bWJlcj09OTkpXS5pZA==::46b', 'always', 0 %}"
+            name: A2 delete sales desk
+            meta:
+              id: req_4e182fb2c7444f11b9bd5502119d697d
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales desk deleted successfully'
+              sortKey: 67000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/delete/{{ _.unknown_id }}"
+            name: A2 delete sales desk - unknown id (404)
+            meta:
+              id: req_5ddbed13f2ab40abb91507499519dbc4
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 70000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/all"
+            name: A2 all sales desk
+            meta:
+              id: req_94d57fad7a1b49feb10a3e4a3ee18b3f
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + list
+              sortKey: 64000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/save"
+            name: A2 save sales desk
+            meta:
+              id: req_b4dd7c099f1a4b17bf3d9dc287d99830
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales desk saved successfully'
+              sortKey: 63000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 99,
+                  "name": "TEMP desk"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/update/{{ _.unknown_id }}"
+            name: A2 update sales desk - unknown id (404)
+            meta:
+              id: req_db3ee32242ec458fbd73fc3ccfe267a5
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 69000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 99,
+                  "name": "TEMP desk updated"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/update/{% response 'body',
+              'req_ea92c9ea2fac45f18b77dc2713491dc2',
+              'b64::JFs/KEAuZGVza051bWJlcj09OTkpXS5pZA==::46b', 'always', 0 %}"
+            name: A2 update sales desk
+            meta:
+              id: req_e90b6d72c597428ca097d50c376c52f7
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales desk updated successfully'
+              sortKey: 66000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "deskNumber": 99,
+                  "name": "TEMP desk updated"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: A2 - Airlines
+        meta:
+          id: fld_4bc020b6ad444d85a013600ca7347aa0
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 53000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/airlines/all"
+            name: A2 all airline
+            meta:
+              id: req_2eea8564710c49fe91ab8d737f203b61
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + list
+              sortKey: 55000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/delete/{{ _.unknown_id }}"
+            name: A2 delete airline - unknown id (404)
+            meta:
+              id: req_43ac11d99d144b2fbabf31340554d19e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 61000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/{% response 'body',
+              'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J1RFTVAgQWlybGluZScgfHwgQC5uYW1lPT0nVEVNUCB\
+              BaXJsaW5lIFVwZGF0ZWQnKV0uaWQ=::46b', 'always', 0 %}"
+            name: A2 get airline by id
+            meta:
+              id: req_6701f0f86db841c8b8ea617790b1d51d
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + entity
+              sortKey: 56000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/save"
+            name: A2 save airline
+            meta:
+              id: req_69219514f3794d529d62430e3b9f92c4
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Airline saved successfully'
+              sortKey: 54000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "TEMP Airline"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/update/{{ _.unknown_id }}"
+            name: A2 update airline - unknown id (404)
+            meta:
+              id: req_70cada2277a144c49bd7f76aae692821
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 60000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "TEMP Airline Updated"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/{{ _.unknown_id }}"
+            name: A2 get airline - unknown id (404)
+            meta:
+              id: req_9420826e878e4b08800f52053a3b9de9
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The airline with that id does not exist'
+              sortKey: 59000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/update/{% response 'body',
+              'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J1RFTVAgQWlybGluZScgfHwgQC5uYW1lPT0nVEVNUCB\
+              BaXJsaW5lIFVwZGF0ZWQnKV0uaWQ=::46b', 'always', 0 %}"
+            name: A2 update airline
+            meta:
+              id: req_baa023b3b1fe40b68c3b0d6be083a602
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Airline updated successfully'
+              sortKey: 57000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "name": "TEMP Airline Updated"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/airlines/delete/{% response 'body',
+              'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J1RFTVAgQWlybGluZScgfHwgQC5uYW1lPT0nVEVNUCB\
+              BaXJsaW5lIFVwZGF0ZWQnKV0uaWQ=::46b', 'always', 0 %}"
+            name: A2 delete airline
+            meta:
+              id: req_bb362632c20544e28241d9febeb2efa9
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Airline deleted successfully'
+              sortKey: 58000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: A2 - Clients
+        meta:
+          id: fld_65cd9ca530e74d1eb60ff9874149df06
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 80000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/clients/update/{% response 'body',
+              'req_c72b66ef8cf74c0aa484d14ce3c57d44',
+              'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdURU1QLTAwMDEnKV0uaWQ=::46b',
+              'always', 0 %}"
+            name: A2 update client
+            meta:
+              id: req_139af62a84274492a235a02d63eed6aa
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Client updated successfully'
+              sortKey: 84000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "ClientUpdated",
+                  "passportNumber": "TEMP-0001",
+                  "email": "t@x.rw",
+                  "phone": "0"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/{% response 'body',
+              'req_c72b66ef8cf74c0aa484d14ce3c57d44',
+              'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdURU1QLTAwMDEnKV0uaWQ=::46b',
+              'always', 0 %}"
+            name: A2 get client by id
+            meta:
+              id: req_3166adfcf6454e06ad36b8d0d4fd04c7
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + entity
+              sortKey: 83000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/save"
+            name: A2 save client
+            meta:
+              id: req_3a79a8fbbd564c2b899d5a9c4c5e90ea
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Client saved successfully'
+              sortKey: 81000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "Client",
+                  "passportNumber": "TEMP-0001",
+                  "email": "t@x.rw",
+                  "phone": "0"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/delete/{% response 'body',
+              'req_c72b66ef8cf74c0aa484d14ce3c57d44',
+              'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdURU1QLTAwMDEnKV0uaWQ=::46b',
+              'always', 0 %}"
+            name: A2 delete client
+            meta:
+              id: req_7861196a576747e3841c8ff32e37a4c9
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Client deleted successfully'
+              sortKey: 85000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/{{ _.unknown_id }}"
+            name: A2 get client - unknown id (404)
+            meta:
+              id: req_92cb4fd7f6ea4dcf988bc1397226f3fb
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The client with that id does not exist'
+              sortKey: 86000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/update/{{ _.unknown_id }}"
+            name: A2 update client - unknown id (404)
+            meta:
+              id: req_9f0d2f1e343e4e2faf57ed8e24cc5400
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 87000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "ClientUpdated",
+                  "passportNumber": "TEMP-0001",
+                  "email": "t@x.rw",
+                  "phone": "0"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/delete/{{ _.unknown_id }}"
+            name: A2 delete client - unknown id (404)
+            meta:
+              id: req_ec1b59e163b44203a5977b355ecbc2c4
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 88000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/clients/all"
+            name: A2 all client
+            meta:
+              id: req_f4256cdc79ff4e8e8578aea6dea1e125
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + list
+              sortKey: 82000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: A2 - Agents
+        meta:
+          id: fld_67567f2bee134e9da6bf49f312e8929d
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 71000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/agents/update/{{ _.unknown_id }}"
+            name: A2 update agent - unknown id (404)
+            meta:
+              id: req_367ea037b51846c0959e12b6bc12352b
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 78000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "AgentUpdated",
+                  "email": "temp@x.rw"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/update/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nVGVtcCcpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 update agent
+            meta:
+              id: req_4a9f07d92fec46f4957d27a3c0ba3e74
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Agent updated successfully'
+              sortKey: 75000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "AgentUpdated",
+                  "email": "temp@x.rw"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/delete/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nVGVtcCcpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 delete agent
+            meta:
+              id: req_4b162b0ca84e485ab64f8b8f7f7d1c35
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Agent deleted successfully'
+              sortKey: 76000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nVGVtcCcpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 get agent by id
+            meta:
+              id: req_5faa4a8adb074632875947366a2095d6
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + entity
+              sortKey: 74000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/all"
+            name: A2 all agent
+            meta:
+              id: req_8f2f3f6a358f4e8e8a2a61eab20bf36b
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + list
+              sortKey: 73000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/delete/{{ _.unknown_id }}"
+            name: A2 delete agent - unknown id (404)
+            meta:
+              id: req_b2862f186c124ddebe54cb31444f9fb7
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 79000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/save"
+            name: A2 save agent
+            meta:
+              id: req_dfe34c4eb6da47dd892ac01e3b698e2a
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Agent saved successfully'
+              sortKey: 72000
+            method: POST
+            body:
+              mimeType: application/json
+              text: |-
+                {
+                  "firstName": "Temp",
+                  "lastName": "Agent",
+                  "email": "temp@x.rw"
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{{ _.unknown_id }}"
+            name: A2 get agent - unknown id (404)
+            meta:
+              id: req_eb989bf1f55e419aae34fbdd0fc21b2e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The agent with that id does not exist'
+              sortKey: 77000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: A2 - Sales orders
+        meta:
+          id: fld_a44a5cc8dc0a4d0695f33a857c212695
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 89000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/sales-orders/update/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTk5OTkpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 update sales order
+            meta:
+              id: req_13af2589847740788c08a0c9378751b0
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order updated successfully'
+              sortKey: 93000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "2027-03-02",
+                  "totalAmount": 9999,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/all"
+            name: A2 all sales order
+            meta:
+              id: req_2230855ddd5b411a855f856b0dac7888
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + list
+              sortKey: 91000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{{ _.unknown_id }}"
+            name: A2 get sales order - unknown id (404)
+            meta:
+              id: req_343bb1f04a694cdab3a62fbfdd48da6d
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The sales order with that id does not exist'
+              sortKey: 95000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/delete/{{ _.unknown_id }}"
+            name: A2 delete sales order - unknown id (404)
+            meta:
+              id: req_42021127f4c547d182cc79f33fbe710f
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 97000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/update/{{ _.unknown_id }}"
+            name: A2 update sales order - unknown id (404)
+            meta:
+              id: req_6f91efec14fc4e6e85ca5ba6da0d2c75
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404
+              sortKey: 96000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "2027-03-02",
+                  "totalAmount": 9999,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTk5OTkpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 get sales order by id
+            meta:
+              id: req_9abc468ddfc143639963b94348d8214e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 + entity
+              sortKey: 92000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/delete/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTk5OTkpXS5pZA==::46b', 'always', 0
+              %}"
+            name: A2 delete sales order
+            meta:
+              id: req_e02b61a5fc3a4692b05fd6c11410cd4c
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order deleted successfully'
+              sortKey: 94000
+            method: DELETE
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: A2 save sales order
+            meta:
+              id: req_e8aa58f297c74d948ff672174c998d6e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 201 'Sales order saved successfully'
+              sortKey: 90000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "2027-03-01",
+                  "totalAmount": 9999,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: 00 - Helpers (ID lookups, send automatically)
+    meta:
+      id: fld_7b0ac8c403694091b646fa7ba41750f5
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 1000
+      description: These requests are re-sent automatically by the other requests to
+        find UUIDs. You normally never send them by hand.
+    children:
+      - url: "{{ _.base_url }}/api/agents/all"
+        name: lookup agents
+        meta:
+          id: req_2c223de676a649ea9bbd94fa53516361
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: ""
+          sortKey: 4000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/airlines/all"
+        name: lookup airlines
+        meta:
+          id: req_74fa6c974c394e7f83680073f3c51c80
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: ""
+          sortKey: 2000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/issued-tickets/client/PC123456"
+        name: lookup tickets of PC123456
+        meta:
+          id: req_950ab022574b44c0b4b50cd523c5709d
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: ""
+          sortKey: 7000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/clients/all"
+        name: lookup clients
+        meta:
+          id: req_c72b66ef8cf74c0aa484d14ce3c57d44
+          created: 1793534534012
+          modified: 1793535293084
+          isPrivate: false
+          description: ""
+          sortKey: 5000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-desks/all"
+        name: lookup sales desks
+        meta:
+          id: req_ea92c9ea2fac45f18b77dc2713491dc2
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: ""
+          sortKey: 3000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/between?start=2000-01-01&end=2099-12-31"
+        name: lookup sales orders (via /between, works even if /all is broken)
+        meta:
+          id: req_eab833f5680e4adc953051485cc8b487
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: ""
+          sortKey: 6000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: 05 - Part D - Business rules
+    meta:
+      id: fld_d04a997fb2664986852552550c272925
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 116000
+      description: ""
+    children:
+      - name: D2 - Status flow
+        meta:
+          id: fld_0c4cdeaf356b4d8a8135ba7243413955
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 122000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDEpXS5pZA==::46b', 'always', 0
+              %}/status?status=QUOTED"
+            name: D2 ERR - PAID -> QUOTED on O1 (400)
+            meta:
+              id: req_51b82f8dae2048abab775cc9e9921e89
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 400 'Cannot change status from PAID to QUOTED'
+              sortKey: 127000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTc3NzcpXS5pZA==::46b', 'always', 0
+              %}/status?status=CANCELLED"
+            name: D2 OK - BOOKED -> CANCELLED (order 7777)
+            meta:
+              id: req_5f0993de559945618e46790562edc8e9
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200
+              sortKey: 125000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDMpXS5pZA==::46b', 'always', 0
+              %}/status?status=PAID"
+            name: D2 ERR - QUOTED -> PAID skip (400)
+            meta:
+              id: req_6e2052878f9e407e84e2baaddc2359ae
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 400 'Cannot change status from QUOTED to PAID'
+              sortKey: 128000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTc3NzcpXS5pZA==::46b', 'always', 0
+              %}/status?status=QUOTED"
+            name: D2 ERR - BOOKED -> QUOTED (400)
+            meta:
+              id: req_86a53d7a432b40349259daf8430b10dd
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 400 'Cannot change status from BOOKED to QUOTED'
+              sortKey: 124000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTc3NzcpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: D2 ERR - CANCELLED -> BOOKED (400)
+            meta:
+              id: req_993c7c3c56e04b22b325f3fc5e974552
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 400 'Cannot change status from CANCELLED to BOOKED'
+              sortKey: 126000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/update/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDMpXS5pZA==::46b', 'always', 0
+              %}"
+            name: D2 ERR - PUT must NOT change status
+            meta:
+              id: req_9edfd3b0a8644906a40f07176c3580ae
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200, but GET afterwards must still show QUOTED
+              sortKey: 130000
+            method: PUT
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_c }}",
+                  "status": "PAID",
+                  "totalAmount": 1003,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzEyMzQ1NicpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTEwMDMpXS5pZA==::46b', 'always', 0
+              %}"
+            name: D2 check - O3 still QUOTED after PUT
+            meta:
+              id: req_aed02603b7d54e4ea231869491fcdf50
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: status must still be QUOTED
+              sortKey: 131000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTc3NzcpXS5pZA==::46b', 'always', 0
+              %}/status?status=BOOKED"
+            name: D2 OK - QUOTED -> BOOKED (order 7777)
+            meta:
+              id: req_e5f743103c164ded83e0cece80bc3ed1
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales order status updated successfully'
+              sortKey: 123000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/{{ _.unknown_id }}/status?status=BOOKED"
+            name: D2 ERR - unknown id (404)
+            meta:
+              id: req_ee20d93f35684d1ebbc9964efef4ecde
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The sales order with that id does not exist'
+              sortKey: 129000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: D4 - Move agent to another desk
+        meta:
+          id: fld_313a8022d5a24d40a210bf4333bcd661
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 138000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0
+              %}/sales-desk?deskNumber=4"
+            name: D4 OK - Carine -> desk 4 (200)
+            meta:
+              id: req_4f1ab72189fb47a184e2aafc8203b743
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Sales desk changed successfully'
+              sortKey: 139000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0
+              %}/sales-desk?deskNumber=3"
+            name: D4 restore - Carine back to desk 3
+            meta:
+              id: req_57f35e7a18134990b58bbe2b7680bb95
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Restores seed state (desk 4 free again)
+              sortKey: 144000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0
+              %}/sales-desk?deskNumber=4"
+            name: D4 ERR - desk 4 now taken (409)
+            meta:
+              id: req_6ce48f7b36cc4d11ba9f41ed63d59276
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 409 'That sales desk is taken by another agent'
+              sortKey: 141000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{{ _.unknown_id }}/sales-desk?deskNumber=3"
+            name: D4 ERR - unknown agent (404)
+            meta:
+              id: req_8e2d0bd0118d422d88e7772e150d2764
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The agent with that id does not exist'
+              sortKey: 142000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0
+              %}/sales-desk?deskNumber=99"
+            name: D4 ERR - unknown deskNumber (404)
+            meta:
+              id: req_bc955b0701c0461782390da07334ee11
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The sales desk with that deskNumber does not exist'
+              sortKey: 143000
+            method: PATCH
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-desks/free"
+            name: D4 check - C2 now returns desk 3
+            meta:
+              id: req_d18411ad9d844d88842f98b36a8deb30
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Old desk 3 is free, desk 4 taken
+              sortKey: 140000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: D1 - Safe saving
+        meta:
+          id: fld_3cd864e9686d4084830995a32538248c
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 117000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/sales-orders/{% response 'body',
+              'req_eab833f5680e4adc953051485cc8b487',
+              'b64::JFs/KEAudG90YWxBbW91bnQ9PTc3NzcpXS5pZA==::46b', 'always', 0
+              %}"
+            name: D1 check - order 7777 is QUOTED
+            meta:
+              id: req_4c2cf138958b4625aa56b73618904fa6
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: status must be QUOTED
+              sortKey: 119000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: D1 ERR - agent already booked that date (409)
+            meta:
+              id: req_6135987d446a480cb99db80ef537a98f
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 409 'Agent already has an order on that date' (Bob has
+                non-cancelled O2 that day)
+              sortKey: 121000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "{{ _.d_b }}",
+                  "totalAmount": 100,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: D1 OK - body says PAID but must be saved QUOTED (201)
+            meta:
+              id: req_eb85c09e2c134d689f4f59ac3e570bf8
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: "Expect 201. Then check the order: status must be QUOTED (see next
+                request)."
+              sortKey: 118000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "2027-01-15",
+                  "status": "PAID",
+                  "totalAmount": 7777,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/sales-orders/save"
+            name: D1 ERR - date in the past (400)
+            meta:
+              id: req_fd6adc339de549e493d8473b4bdac9b2
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 400 'Sales order date cannot be in the past'
+              sortKey: 120000
+            method: POST
+            body:
+              mimeType: application/json
+              text: >-
+                {
+                  "orderDate": "2020-01-01",
+                  "totalAmount": 100,
+                  "client": {"id": "{% response 'body', 'req_c72b66ef8cf74c0aa484d14ce3c57d44', 'b64::JFs/KEAucGFzc3BvcnROdW1iZXI9PSdQQzU2Nzg5MCcpXS5pZA==::46b', 'always', 0 %}"},
+                  "agent": {"id": "{% response 'body', 'req_2c223de676a649ea9bbd94fa53516361', 'b64::JFs/KEAuZmlyc3ROYW1lPT0nQ2FyaW5lJyldLmlk::46b', 'always', 0 %}"}
+                }
+            headers:
+              - name: Content-Type
+                value: application/json
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+      - name: D3 - Add airline to agent
+        meta:
+          id: fld_6c20bbaa099542ac89db05e7e2123faf
+          created: 1793534534012
+          modified: 1793534534012
+          sortKey: 132000
+          description: ""
+        children:
+          - url: "{{ _.base_url }}/api/agents/{{ _.unknown_id }}/airlines/{% response
+              'body', 'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J1J3YW5kQWlyJyldLmlk::46b', 'always', 0 %}"
+            name: D3 ERR - unknown agent (404)
+            meta:
+              id: req_1f205ade8be049919aababee4c0cd49e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'The agent with that id does not exist'
+              sortKey: 135000
+            method: PUT
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0
+              %}/airlines/{% response 'body',
+              'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J0tlbnlhIEFpcndheXMnKV0uaWQ=::46b',
+              'always', 0 %}"
+            name: D3 OK - add Kenya Airways to Bob (200)
+            meta:
+              id: req_7ebb7ac192f643e8a9c6597ec3f918e9
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 200 'Airline added to the agent' (Ethiopian must be kept)
+              sortKey: 133000
+            method: PUT
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0
+              %}/airlines/{{ _.unknown_id }}"
+            name: D3 ERR - unknown airline (404)
+            meta:
+              id: req_7fad303a7637455994553af029297c7b
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 404 'That airline does not exist'
+              sortKey: 136000
+            method: PUT
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0 %}"
+            name: D3 check - Bob's airlines
+            meta:
+              id: req_9e2cc63fef08482cbb0a53342b93541e
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Ethiopian + Kenya
+              sortKey: 137000
+            method: GET
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+          - url: "{{ _.base_url }}/api/agents/{% response 'body',
+              'req_2c223de676a649ea9bbd94fa53516361',
+              'b64::JFs/KEAuZmlyc3ROYW1lPT0nQm9iJyldLmlk::46b', 'always', 0
+              %}/airlines/{% response 'body',
+              'req_74fa6c974c394e7f83680073f3c51c80',
+              'b64::JFs/KEAubmFtZT09J0tlbnlhIEFpcndheXMnKV0uaWQ=::46b',
+              'always', 0 %}"
+            name: D3 ERR - Bob already has Kenya Airways (409)
+            meta:
+              id: req_e446b45121684ee59e03ff052d863998
+              created: 1793534534012
+              modified: 1793534534012
+              isPrivate: false
+              description: Expect 409 'The agent already has that airline'
+              sortKey: 134000
+            method: PUT
+            settings:
+              renderRequestBody: true
+              encodeUrl: true
+              followRedirects: global
+              cookies:
+                send: true
+                store: true
+              rebuildPath: true
+  - name: 03 - Part B - Derived queries
+    meta:
+      id: fld_d441978affac4eed9ec025ea871aea89
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 98000
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/sales-orders/between?start={{ _.range_start }}&end={{
+          _.range_end }}"
+        name: B3 - sales orders between range
+        meta:
+          id: req_0fce41b6b1ca4e609ace388dca927740
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Ordered by orderDate
+          sortKey: 106000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/by-status?status=PAID"
+        name: B2 - sales orders by status PAID
+        meta:
+          id: req_1354730857464000b7e6390bdf892363
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Earliest orderDate first
+          sortKey: 103000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/by-status?status=CANCELLED"
+        name: B2 - sales orders by status CANCELLED
+        meta:
+          id: req_213400ad9068468ebc929a32f1212524
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Earliest orderDate first
+          sortKey: 104000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/clients/by-last-name?lastName=zzzz"
+        name: B1 - no match -> []
+        meta:
+          id: req_276a780b419948a3baf62b512f3004e9
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 200 []
+          sortKey: 100000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/by-status?status=QUOTED"
+        name: B2 - sales orders by status QUOTED
+        meta:
+          id: req_7cf6bc02ce444bb49d54037967a28dd8
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Earliest orderDate first
+          sortKey: 101000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/clients/by-last-name?lastName=cyubahiro"
+        name: B1 - clients by lastName 'cyubahiro' (ignore case, sorted by firstName)
+        meta:
+          id: req_82c0a01a02fa422594ce08342e7a3e58
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect Jean then Marie
+          sortKey: 99000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/by-status?status=FOO"
+        name: B2 - invalid status enum
+        meta:
+          id: req_b347b9089dc94e8d8b68344fe477dd99
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Spring returns 400
+          sortKey: 105000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/between?start={{ _.d_a }}&end={{ _.d_a
+          }}"
+        name: B3 - inclusive boundaries (single day d_a)
+        meta:
+          id: req_bb34b202897c46f3ac9e281c65f85bce
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Must return order O1 (both ends inclusive)
+          sortKey: 107000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/by-status?status=BOOKED"
+        name: B2 - sales orders by status BOOKED
+        meta:
+          id: req_e05b748fb7a14d6ebf2a2257c21338c2
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Earliest orderDate first
+          sortKey: 102000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: 07 - Part F - Reports & bulk updates
+    meta:
+      id: fld_d5b1268f65704056b2a5b9c603c469c2
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 156000
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/sales-orders/cancel-day?agentId={% response 'body',
+          'req_2c223de676a649ea9bbd94fa53516361',
+          'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0
+          %}&date={{ _.d_cancel }}"
+        name: F2 OK - cancel Alice's day d_cancel
+        meta:
+          id: req_385fe3f40c8647e0969917525efb755f
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect '2 sales orders cancelled' (O4 already cancelled + O5)
+          sortKey: 158000
+        method: PATCH
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/stats/by-status"
+        name: F1 check - stats after F2
+        meta:
+          id: req_47c329efff454cc69c700150566fb254
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: QUOTED count dropped, CANCELLED rose
+          sortKey: 161000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/cancel-day?agentId={{ _.unknown_id
+          }}&date={{ _.d_a }}"
+        name: F2 - unknown agent
+        meta:
+          id: req_7d9593b1a97844d58327278c8d9ebed6
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect '0 sales orders cancelled'
+          sortKey: 160000
+        method: PATCH
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/cancel-day?agentId={% response 'body',
+          'req_2c223de676a649ea9bbd94fa53516361',
+          'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0
+          %}&date={{ _.d_a }}"
+        name: F2 - PAID is protected (Alice d_a has PAID O1)
+        meta:
+          id: req_8f1f226eeca4421c8521b9d1d08c6c18
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect '0 sales orders cancelled'; O1 stays PAID
+          sortKey: 159000
+        method: PATCH
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-orders/stats/by-status"
+        name: F1 - sales orders per status
+        meta:
+          id: req_a28d7a235d8044dd8c31f5e4192643e9
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect e.g. [["QUOTED",3],["PAID",3],...]; zero-count statuses absent
+          sortKey: 157000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: 04 - Part C - JPQL with joins
+    meta:
+      id: fld_f91903a5c04c455a9ca0cf4cff017760
+      created: 1793534534012
+      modified: 1793534534012
+      sortKey: 108000
+      description: ""
+    children:
+      - url: "{{ _.base_url }}/api/clients/of-agent/{% response 'body',
+          'req_2c223de676a649ea9bbd94fa53516361',
+          'b64::JFs/KEAuZmlyc3ROYW1lPT0nQWxpY2UnKV0uaWQ=::46b', 'always', 0 %}"
+        name: C4 - clients of agent Alice (distinct)
+        meta:
+          id: req_59b96787cd484fac95f40f5fefc28ccf
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Each client listed once
+          sortKey: 114000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/clients/of-agent/{{ _.unknown_id }}"
+        name: C4 - unknown agent (404)
+        meta:
+          id: req_5a49bd90868345368fa0cf8838a136c1
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect 404 'The agent with that id does not exist'
+          sortKey: 115000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/agents/by-airline?name=KENYA AIRWAYS"
+        name: C1 - agents by airline 'KENYA AIRWAYS'
+        meta:
+          id: req_6b96a864d0014a49a6aeafd6f05804dc
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect Alice + Carine
+          sortKey: 110000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/airlines/unused"
+        name: C3 - airlines nobody holds
+        meta:
+          id: req_7e16fa37ad864dbfa458a5f28d364362
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: "Seed state: Qatar Airways"
+          sortKey: 113000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/sales-desks/free"
+        name: C2 - free sales desks
+        meta:
+          id: req_998ae2eaf543430ab238c903ff0d3991
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: "Seed state: desk 4 only"
+          sortKey: 112000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/agents/by-airline?name=qatar airways"
+        name: C1 - airline nobody holds -> []
+        meta:
+          id: req_9af4a96a26154b4987e0e84f612068df
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect []
+          sortKey: 111000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/api/agents/by-airline?name=rwandair"
+        name: C1 - agents by airline 'rwandair' (case-insensitive)
+        meta:
+          id: req_e04743846972488eaf75f0144e493f63
+          created: 1793534534012
+          modified: 1793534534012
+          isPrivate: false
+          description: Expect Alice
+          sortKey: 109000
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_4a466af6c7a1e331a1dbe646a26ea13f2e982e9d
+    created: 1793487149857
+    modified: 1793487149857
+environments:
+  name: Base Environment
+  meta:
+    id: env_4a466af6c7a1e331a1dbe646a26ea13f2e982e9d
+    created: 1793487149856
+    modified: 1793535254309
+    isPrivate: false
+  data:
+    base_url: http://localhost:8080
