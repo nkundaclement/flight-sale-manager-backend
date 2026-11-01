@@ -52,4 +52,9 @@ public class AgentService {
         agentRepository.deleteById(id);
         return "Agent deleted successfully";
     }
+
+    // search agent by airline
+    public List<Agent> getAgentsByAirline(String name) {
+        return agentRepository.findAgentsHoldingAirline(name);
+    }
 }
