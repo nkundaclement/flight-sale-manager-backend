@@ -8,6 +8,7 @@ import rw.ac.auca.nkunda.flight_sale_manager.repository.IssuedTicketRepository;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.SalesOrderRepository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,5 +37,9 @@ public class IssuedTicketService {
         issuedTicket.setSalesOrder(salesOrder);
         issuedTicketRepository.save(issuedTicket);
         return "Issued ticket saved successfully";
+    }
+
+    public List<IssuedTicket> getTicketsOfClient(String passportNumber) {
+        return issuedTicketRepository.findTicketsOfClient(passportNumber);
     }
 }

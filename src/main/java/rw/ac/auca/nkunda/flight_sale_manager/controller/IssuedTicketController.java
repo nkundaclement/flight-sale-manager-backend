@@ -2,14 +2,11 @@ package rw.ac.auca.nkunda.flight_sale_manager.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import rw.ac.auca.nkunda.flight_sale_manager.model.IssuedTicket;
 import rw.ac.auca.nkunda.flight_sale_manager.service.IssuedTicketService;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -33,5 +30,10 @@ public class IssuedTicketController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
+    }
+
+    @GetMapping("/client/{passportNumber}")
+    public ResponseEntity<List<IssuedTicket>> getTicketsOfClient(@PathVariable String passportNumber) {
+        return ResponseEntity.ok(issuedTicketService.getTicketsOfClient(passportNumber));
     }
 }
