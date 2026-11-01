@@ -26,7 +26,7 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<Client>> getAllClients() {
         return ResponseEntity.ok(clientService.getAllClients());
     }
