@@ -3,8 +3,10 @@ package rw.ac.auca.nkunda.flight_sale_manager.service;
 import org.springframework.stereotype.Service;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Agent;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Airline;
+import rw.ac.auca.nkunda.flight_sale_manager.model.SalesDesk;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.AgentRepository;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.AirlineRepository;
+import rw.ac.auca.nkunda.flight_sale_manager.repository.SalesDeskRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +17,12 @@ public class AgentService {
 
     private final AgentRepository agentRepository;
     private final AirlineRepository airlineRepository;
+    private final SalesDeskRepository salesDeskRepository;
 
-    public AgentService(AgentRepository agentRepository, AirlineRepository airlineRepository) {
+    public AgentService(AgentRepository agentRepository, AirlineRepository airlineRepository, SalesDeskRepository salesDeskRepository) {
         this.agentRepository = agentRepository;
         this.airlineRepository = airlineRepository;
+        this.salesDeskRepository = salesDeskRepository;
     }
 
     public String saveAgent(Agent agent) {
@@ -81,5 +85,23 @@ public class AgentService {
         agent.getAirlines().add(foundAirline.get());
         agentRepository.save(agent);
         return "Airline added to the agent";
+    }
+
+    public String changeSalesDesk(UUID agentId, int deskNumber) {
+        Optional<Agent> foundAgent = agentRepository.findById(agentId);
+        if (foundAgent.isEmpty()) {
+            return "The agent with that id does not exist";
+        }
+        Optional<SalesDesk> foundDesk = salesDeskRepository.findByDeskNumber(deskNumber);
+        if (foundDesk.isEmpty()) {
+            return "The sales desk with that deskNumber does not exist";
+        }
+        if (agentRepository.existsBySalesDesk(foundDesk.get())) {
+            return "That sales desk is taken by another agent";
+        }
+        Agent agent = foundAgent.get();
+        agent.setSalesDesk(foundDesk.get());
+        agentRepository.save(agent);
+        return "Sales desk changed successfully";
     }
 }

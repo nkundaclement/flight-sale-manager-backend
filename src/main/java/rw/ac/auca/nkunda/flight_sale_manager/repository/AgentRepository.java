@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Agent;
+import rw.ac.auca.nkunda.flight_sale_manager.model.SalesDesk;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,4 +14,6 @@ import java.util.UUID;
 public interface AgentRepository extends JpaRepository<Agent, UUID> {
     @Query("SELECT a FROM Agent a JOIN a.airlines al WHERE LOWER(al.name) = LOWER(:name)")
     List<Agent> findAgentsHoldingAirline(@Param("name") String name);
+
+    boolean existsBySalesDesk(SalesDesk salesDesk);
 }

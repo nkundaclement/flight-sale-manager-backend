@@ -81,4 +81,17 @@ public class AgentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
     }
+
+    @PatchMapping("/{agentId}/sales-desk")
+    public ResponseEntity<String> changeSalesDesk(@PathVariable UUID agentId,
+                                                  @RequestParam int deskNumber) {
+        String message = agentService.changeSalesDesk(agentId, deskNumber);
+        if (message.equals("Sales desk changed successfully")) {
+            return ResponseEntity.ok(message);
+        } else if (message.equals("That sales desk is taken by another agent")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
+    }
 }
