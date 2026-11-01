@@ -92,4 +92,11 @@ public class SalesOrderController {
         return ResponseEntity.ok(salesOrderService.getSalesOrderCountsByStatus());
     }
 
+    @PatchMapping("/cancel-day")
+    public ResponseEntity<String> cancelOrdersOfAgentOnDate(@RequestParam UUID agentId,
+                                                            @RequestParam String date) {
+        LocalDate day = LocalDate.parse(date);
+        return ResponseEntity.ok(salesOrderService.cancelOrdersOfAgentOnDate(agentId, day));
+    }
+
 }

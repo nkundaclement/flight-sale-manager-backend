@@ -1,5 +1,6 @@
 package rw.ac.auca.nkunda.flight_sale_manager.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import rw.ac.auca.nkunda.flight_sale_manager.model.OrderStatus;
 import rw.ac.auca.nkunda.flight_sale_manager.model.SalesOrder;
@@ -82,5 +83,12 @@ public class SalesOrderService {
 
     public List<Object[]> getSalesOrderCountsByStatus() {
         return salesOrderRepository.countSalesOrdersByStatus();
+    }
+
+    @Transactional
+    public String cancelOrdersOfAgentOnDate(UUID agentId, LocalDate date) {
+        int updated = salesOrderRepository.cancelOrdersOfAgentOnDate(
+                agentId, date, OrderStatus.CANCELLED, OrderStatus.PAID);
+        return updated + " sales orders cancelled";
     }
 }
