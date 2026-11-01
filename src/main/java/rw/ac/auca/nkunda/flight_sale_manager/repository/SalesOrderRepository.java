@@ -1,6 +1,7 @@
 package rw.ac.auca.nkunda.flight_sale_manager.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Agent;
 import rw.ac.auca.nkunda.flight_sale_manager.model.OrderStatus;
@@ -15,5 +16,6 @@ public interface SalesOrderRepository extends JpaRepository<SalesOrder, UUID> {
     List<SalesOrder> findByStatusOrderByOrderDateAsc(OrderStatus status);
     List<SalesOrder> findByOrderDateBetweenOrderByOrderDateAsc(LocalDate start, LocalDate end);
     boolean existsByAgentAndOrderDateAndStatusNot(Agent agent, LocalDate orderDate, OrderStatus status);
-
+    @Query("SELECT s.status, COUNT(s) FROM SalesOrder s GROUP BY s.status")
+    List<Object[]> countSalesOrdersByStatus();
 }

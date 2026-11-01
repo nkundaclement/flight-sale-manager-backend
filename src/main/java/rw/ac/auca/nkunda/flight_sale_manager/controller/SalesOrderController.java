@@ -87,4 +87,9 @@ public class SalesOrderController {
         return ResponseEntity.ok(salesOrderService.getSalesOrdersBetween(startDate, endDate));
     }
 
+    @GetMapping("/stats/by-status")
+    public ResponseEntity<List<Object[]>> getSalesOrderCountsByStatus() {
+        return ResponseEntity.ok(salesOrderService.getSalesOrderCountsByStatus());
+    }
+
 }

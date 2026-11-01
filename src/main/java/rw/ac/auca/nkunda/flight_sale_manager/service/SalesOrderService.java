@@ -79,4 +79,8 @@ public class SalesOrderService {
         salesOrderRepository.deleteById(id);
         return "Sales order deleted successfully";
     }
+
+    public List<Object[]> getSalesOrderCountsByStatus() {
+        return salesOrderRepository.countSalesOrdersByStatus();
+    }
 }
