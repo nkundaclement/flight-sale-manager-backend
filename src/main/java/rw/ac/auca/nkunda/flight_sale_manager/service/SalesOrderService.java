@@ -20,6 +20,14 @@ public class SalesOrderService {
     }
 
     public String saveSalesOrder(SalesOrder salesOrder) {
+        if (salesOrder.getOrderDate().isBefore(LocalDate.now())) {
+            return "Sales order date cannot be in the past";
+        }
+        if (salesOrderRepository.existsByAgentAndOrderDateAndStatusNot(
+                salesOrder.getAgent(), salesOrder.getOrderDate(), OrderStatus.CANCELLED)) {
+            return "Agent already has an order on that date";
+        }
+        salesOrder.setStatus(OrderStatus.QUOTED);
         salesOrderRepository.save(salesOrder);
         return "Sales order saved successfully";
     }

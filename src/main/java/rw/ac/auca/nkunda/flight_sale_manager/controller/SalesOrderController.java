@@ -25,7 +25,13 @@ public class SalesOrderController {
     @PostMapping("/save")
     public ResponseEntity<String> saveSalesOrder(@RequestBody SalesOrder salesOrder) {
         String message = salesOrderService.saveSalesOrder(salesOrder);
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        if (message.equals("Sales order saved successfully")) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        } else if (message.equals("Sales order date cannot be in the past")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        }
     }
 
     @GetMapping("/all                       ")
@@ -78,4 +84,5 @@ public class SalesOrderController {
         LocalDate endDate = LocalDate.parse(end);
         return ResponseEntity.ok(salesOrderService.getSalesOrdersBetween(startDate, endDate));
     }
+
 }
