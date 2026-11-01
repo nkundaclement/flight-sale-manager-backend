@@ -2,10 +2,16 @@ package rw.ac.auca.nkunda.flight_sale_manager.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import rw.ac.auca.nkunda.flight_sale_manager.model.OrderStatus;
 import rw.ac.auca.nkunda.flight_sale_manager.model.SalesOrder;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface SalesOrderRepository extends JpaRepository<SalesOrder, UUID> {
+    List<SalesOrder> findByStatusOrderByOrderDateAsc(OrderStatus status);
+    List<SalesOrder> findByOrderDateBetweenOrderByOrderDateAsc(LocalDate start, LocalDate end);
+
 }
