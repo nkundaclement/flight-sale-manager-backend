@@ -68,4 +68,9 @@ public class AirlineController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
     }
+
+    @GetMapping("/unused")
+    public ResponseEntity<List<Airline>> getUnusedAirlines() {
+        return ResponseEntity.ok(airlineService.getUnusedAirlines());
+    }
 }

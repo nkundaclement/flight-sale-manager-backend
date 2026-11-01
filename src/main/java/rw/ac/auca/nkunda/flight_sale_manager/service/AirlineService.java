@@ -48,4 +48,8 @@ public class AirlineService {
         airlineRepository.deleteById(id);
         return "Airline deleted successfully";
     }
+
+    public List<Airline> getUnusedAirlines() {
+        return airlineRepository.findUnusedAirlines();
+    }
 }
