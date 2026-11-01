@@ -1,9 +1,11 @@
 package rw.ac.auca.nkunda.flight_sale_manager.service;
 
 import org.springframework.stereotype.Service;
+import rw.ac.auca.nkunda.flight_sale_manager.model.OrderStatus;
 import rw.ac.auca.nkunda.flight_sale_manager.model.SalesOrder;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.SalesOrderRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,5 +53,15 @@ public class SalesOrderService {
         }
         salesOrderRepository.deleteById(id);
         return "Sales order deleted successfully";
+    }
+
+    // find by order status
+    public List<SalesOrder> getSalesOrdersByStatus(OrderStatus status) {
+        return salesOrderRepository.findByStatusOrderByOrderDateAsc(status);
+    }
+
+    // find order between two date
+    public List<SalesOrder> getSalesOrdersBetween(LocalDate start, LocalDate end) {
+        return salesOrderRepository.findByOrderDateBetweenOrderByOrderDateAsc(start, end);
     }
 }
