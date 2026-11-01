@@ -68,4 +68,9 @@ public class SalesDeskController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
     }
+
+    @GetMapping("/free")
+    public ResponseEntity<List<SalesDesk>> getFreeSalesDesks() {
+        return ResponseEntity.ok(salesDeskService.getFreeSalesDesks());
+    }
 }
