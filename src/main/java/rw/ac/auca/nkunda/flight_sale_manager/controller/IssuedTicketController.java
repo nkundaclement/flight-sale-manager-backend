@@ -36,4 +36,14 @@ public class IssuedTicketController {
     public ResponseEntity<List<IssuedTicket>> getTicketsOfClient(@PathVariable String passportNumber) {
         return ResponseEntity.ok(issuedTicketService.getTicketsOfClient(passportNumber));
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteIssuedTicket(@PathVariable UUID id) {
+        String message = issuedTicketService.deleteIssuedTicket(id);
+        if (message.equals("Issued ticket deleted successfully")) {
+            return ResponseEntity.ok(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
+    }
 }

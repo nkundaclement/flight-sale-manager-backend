@@ -42,4 +42,12 @@ public class IssuedTicketService {
     public List<IssuedTicket> getTicketsOfClient(String passportNumber) {
         return issuedTicketRepository.findTicketsOfClient(passportNumber);
     }
+
+    public String deleteIssuedTicket(UUID id) {
+        if (!issuedTicketRepository.existsById(id)) {
+            return "The issued ticket with that id does not exist";
+        }
+        issuedTicketRepository.deleteById(id);
+        return "Issued ticket deleted successfully";
+    }
 }

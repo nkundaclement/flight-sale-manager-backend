@@ -3,6 +3,7 @@ package rw.ac.auca.nkunda.flight_sale_manager.service;
 import org.springframework.stereotype.Service;
 import rw.ac.auca.nkunda.flight_sale_manager.model.OrderStatus;
 import rw.ac.auca.nkunda.flight_sale_manager.model.SalesOrder;
+import rw.ac.auca.nkunda.flight_sale_manager.repository.IssuedTicketRepository;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.SalesOrderRepository;
 
 import java.time.LocalDate;
@@ -14,9 +15,11 @@ import java.util.UUID;
 public class SalesOrderService {
 
     private final SalesOrderRepository salesOrderRepository;
+    private final IssuedTicketRepository issuedTicketRepository;
 
-    public SalesOrderService(SalesOrderRepository salesOrderRepository) {
+    public SalesOrderService(SalesOrderRepository salesOrderRepository, IssuedTicketRepository issuedTicketRepository) {
         this.salesOrderRepository = salesOrderRepository;
+        this.issuedTicketRepository = issuedTicketRepository;
     }
 
     public String saveSalesOrder(SalesOrder salesOrder) {
@@ -55,14 +58,6 @@ public class SalesOrderService {
         return "Sales order updated successfully";
     }
 
-    public String deleteSalesOrder(UUID id) {
-        if (!salesOrderRepository.existsById(id)) {
-            return "The sales order with that id does not exist";
-        }
-        salesOrderRepository.deleteById(id);
-        return "Sales order deleted successfully";
-    }
-
     // find by order status
     public List<SalesOrder> getSalesOrdersByStatus(OrderStatus status) {
         return salesOrderRepository.findByStatusOrderByOrderDateAsc(status);
@@ -71,5 +66,17 @@ public class SalesOrderService {
     // find order between two date
     public List<SalesOrder> getSalesOrdersBetween(LocalDate start, LocalDate end) {
         return salesOrderRepository.findByOrderDateBetweenOrderByOrderDateAsc(start, end);
+    }
+
+    public String deleteSalesOrder(UUID id) {
+        Optional<SalesOrder> found = salesOrderRepository.findById(id);
+        if (found.isEmpty()) {
+            return "The sales order with that id does not exist";
+        }
+        if (issuedTicketRepository.existsBySalesOrder(found.get())) {
+            return "That sales order has issued tickets, delete them first";
+        }
+        salesOrderRepository.deleteById(id);
+        return "Sales order deleted successfully";
     }
 }

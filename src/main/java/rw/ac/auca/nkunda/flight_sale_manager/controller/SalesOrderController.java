@@ -65,6 +65,8 @@ public class SalesOrderController {
         String message = salesOrderService.deleteSalesOrder(id);
         if (message.equals("Sales order deleted successfully")) {
             return ResponseEntity.ok(message);
+        } else if (message.equals("That sales order has issued tickets, delete them first")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
