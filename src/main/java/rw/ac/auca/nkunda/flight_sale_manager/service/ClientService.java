@@ -2,6 +2,7 @@ package rw.ac.auca.nkunda.flight_sale_manager.service;
 
 import org.springframework.stereotype.Service;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Client;
+import rw.ac.auca.nkunda.flight_sale_manager.repository.AgentRepository;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.ClientRepository;
 
 import java.util.List;
@@ -11,10 +12,12 @@ import java.util.UUID;
 @Service
 public class ClientService {
 
-    private final ClientRepository clientRepository;
+    private final ClientRepository clientRepository;;
+    private final AgentRepository agentRepository;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, AgentRepository agentRepository) {
         this.clientRepository = clientRepository;
+        this.agentRepository = agentRepository;
     }
 
     public String saveClient(Client client) {
@@ -56,5 +59,13 @@ public class ClientService {
     // Find by last name
     public List<Client> getClientsByLastName(String lastName) {
         return clientRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+    }
+
+    // Find client of an agent
+    public Optional<List<Client>> getClientsOfAgent(UUID agentId) {
+        if (!agentRepository.existsById(agentId)) {
+            return Optional.empty();
+        }
+        return Optional.of(clientRepository.findClientsOfAgent(agentId));
     }
 }

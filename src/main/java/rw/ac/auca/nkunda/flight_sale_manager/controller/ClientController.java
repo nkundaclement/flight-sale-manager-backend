@@ -67,4 +67,16 @@ public class ClientController {
     public ResponseEntity<List<Client>> getClientsByLastName(@RequestParam String lastName) {
         return ResponseEntity.ok(clientService.getClientsByLastName(lastName));
     }
+
+    // Find client of an agent
+    @GetMapping("/of-agent/{agentId}")
+    public ResponseEntity<?> getClientsOfAgent(@PathVariable UUID agentId) {
+        Optional<List<Client>> clients = clientService.getClientsOfAgent(agentId);
+        if (clients.isPresent()) {
+            return ResponseEntity.ok(clients.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("The agent with that id does not exist");
+        }
+    }
 }
