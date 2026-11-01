@@ -67,4 +67,18 @@ public class AgentController {
     public ResponseEntity<List<Agent>> getAgentsByAirline(@RequestParam String name) {
         return ResponseEntity.ok(agentService.getAgentsByAirline(name));
     }
+
+    // add agent to airline
+    @PutMapping("/{agentId}/airlines/{airlineId}")
+    public ResponseEntity<String> addAirlineToAgent(@PathVariable UUID agentId,
+                                                    @PathVariable UUID airlineId) {
+        String message = agentService.addAirlineToAgent(agentId, airlineId);
+        if (message.equals("Airline added to the agent")) {
+            return ResponseEntity.ok(message);
+        } else if (message.equals("The agent already has that airline")) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
+    }
 }

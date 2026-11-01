@@ -2,7 +2,9 @@ package rw.ac.auca.nkunda.flight_sale_manager.service;
 
 import org.springframework.stereotype.Service;
 import rw.ac.auca.nkunda.flight_sale_manager.model.Agent;
+import rw.ac.auca.nkunda.flight_sale_manager.model.Airline;
 import rw.ac.auca.nkunda.flight_sale_manager.repository.AgentRepository;
+import rw.ac.auca.nkunda.flight_sale_manager.repository.AirlineRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +14,11 @@ import java.util.UUID;
 public class AgentService {
 
     private final AgentRepository agentRepository;
+    private final AirlineRepository airlineRepository;
 
-    public AgentService(AgentRepository agentRepository) {
+    public AgentService(AgentRepository agentRepository, AirlineRepository airlineRepository) {
         this.agentRepository = agentRepository;
+        this.airlineRepository = airlineRepository;
     }
 
     public String saveAgent(Agent agent) {
@@ -56,5 +60,26 @@ public class AgentService {
     // search agent by airline
     public List<Agent> getAgentsByAirline(String name) {
         return agentRepository.findAgentsHoldingAirline(name);
+    }
+
+    // add airline to agent
+    public String addAirlineToAgent(UUID agentId, UUID airlineId) {
+        Optional<Agent> foundAgent = agentRepository.findById(agentId);
+        if (foundAgent.isEmpty()) {
+            return "The agent with that id does not exist";
+        }
+        Optional<Airline> foundAirline = airlineRepository.findById(airlineId);
+        if (foundAirline.isEmpty()) {
+            return "That airline does not exist";
+        }
+        Agent agent = foundAgent.get();
+        boolean alreadyHeld = agent.getAirlines().stream()
+                .anyMatch(a -> a.getId().equals(airlineId));
+        if (alreadyHeld) {
+            return "The agent already has that airline";
+        }
+        agent.getAirlines().add(foundAirline.get());
+        agentRepository.save(agent);
+        return "Airline added to the agent";
     }
 }
